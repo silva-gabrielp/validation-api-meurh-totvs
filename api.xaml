@@ -1,0 +1,127 @@
+<Controls:MetroWindow 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controlzEx="urn:controlzex"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        Title="Adicionar IP e DNS no Host do Windws e Validação de API"
+	      Height="450"
+        Width="600"
+        TitleCaps="False"
+        BorderThickness="2"
+        BorderBrush="#575757"
+        WindowStyle="None" 
+        ResizeMode="CanMinimize"
+        AllowsTransparency="True" 
+        WindowStartupLocation="CenterScreen"
+        RenderOptions.ClearTypeHint="Enabled"   
+        Style="{DynamicResource CleanWindowStyleKey}">
+    <Window.Resources>
+    
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Lime.xaml" /> <!-- Cor do Tema - https://mahapps.com/docs/themes/usage -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+  
+    </Window.Resources>
+    
+<Controls:MetroWindow.LeftWindowCommands>
+	<Controls:WindowCommands ShowSeparators="False">
+  	<StackPanel Orientation="Horizontal" Margin="10 8 0 5">  	
+        <Viewbox Stretch="Uniform" >
+          <Canvas Height="625" Width="625">
+            <Path Name="Totvs" Fill="#000"  HorizontalAlignment="Center" VerticalAlignment="Center" Data="M125.002861,34.4531403c-166.6705322,98.16922-166.6704559,344.9245605,0.0000839,443.09375S501.1427917,452.3382874,501.1427917,256S291.6734009-63.7159996,125.002861,34.4531403z M426.013916,337.7513123c-0.9072266,19.5047302-11.0375366,20.7899475-94.3484497-2.0411682c1.84021,35.8569031-1.4154358,75.3464661-10.4108887,91.4355164c-64.7005615-6.9405518-211.238739-41.9780884-243.680603-65.1759949c-9.1514587-74.7065125-11.5357132-143.3980713-1.4664383-201.0205841c6.2463608-13.780426,73.4499054,5.3048096,93.4503174,13.1087952c-1.9783478-35.2806702-2.6678314-82.1903076,8.4890747-94.4795761c61.2814178,8.8321762,194.7952118,46.1159058,218.2311554,52.9198074c15.4252625,4.4783325,30.068512,5.000824,31.8781128,41.7365265C431.8997498,250.2287598,426.9210815,318.2466125,426.013916,337.7513123z M326.6758728,232.2897644c2.0823669,18.0467987,4.9895935,103.4203796,4.9895935,103.4203796l-139.3068695-38.2828064c-11.1950989-3.6447754-19.0744781-13.6978455-19.9389038-25.4395752l-2.8617706-97.9298096c0.0018158,0.0003357,36.6268921,7.147995,76.5414886,16.901535C319.2689819,208.8392944,325.315094,220.4962006,326.6758728,232.2897644z" />
+          </Canvas>
+        </Viewbox>
+		</StackPanel>
+	</Controls:WindowCommands>	
+</Controls:MetroWindow.LeftWindowCommands>
+
+  
+	<Grid ShowGridLines="true">
+	
+		<ScrollViewer>
+		
+		  <StackPanel Orientation="Vertical" Margin="5,5,20,40" Grid.Row="1" Grid.Column="1">
+            
+				<Label Content="Testar a comunicação do REST do Meu RH" HorizontalAlignment="Center" Height="30" FontWeight="Bold" Margin="0,0,0,0" VerticalAlignment="Top" />
+				
+				<GridSplitter HorizontalAlignment="Stretch" Foreground="White" Height="1" Margin="10,5,0,5" VerticalAlignment="Top"/>
+			   
+				<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+					<Label Content="SSL (Host):" Width="200"/>
+					<RadioButton x:Name="yesHost" Margin="5" Content="Sim" IsChecked="False" IsEnabled="True" />
+          			<RadioButton x:Name="noHost" Content="Não" Margin="5" IsChecked="False" IsEnabled="True" />
+				</StackPanel>
+				
+				<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+					<Label Content="Porta (Host):" Width="200"/>
+					  <RadioButton x:Name="port8051" Margin="5" Content="8051" IsChecked="False" IsEnabled="True" />
+          	<RadioButton x:Name="port8053" Margin="5" Content="8053"  IsChecked="False" IsEnabled="True" />
+          	<RadioButton x:Name="port8059" Margin="5" Content="8059"  IsChecked="False" IsEnabled="True" />
+          	<RadioButton x:Name="portHostOutra" Margin="10" Content="Outra"  IsChecked="False" IsEnabled="True" />
+          	<TextBox x:Name="dialogPortOutra" Width = "80" Height="15" FontWeight="Bold" IsEnabled="False" />
+				</StackPanel>
+			   
+				<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+					<Label Content="DNS (Host):" Width="200"/>
+					<TextBox x:Name="dialogResultDNSHost" Width = "300" FontWeight="Bold" Text="" />
+				</StackPanel>
+				
+				<GridSplitter HorizontalAlignment="Stretch" Foreground="White" Height="1" Margin="10,15,0,5" VerticalAlignment="Top"/>
+				
+				<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+					<Label Content="Instalação Default (Padrão):" Width="200"/>
+					  <RadioButton x:Name="installDefaultYes" Margin="5" Content="Sim" IsChecked="False" IsEnabled="True" />
+          	<RadioButton x:Name="installDefaultNo" Margin="5" Content="Não" IsChecked="False" IsEnabled="True" />
+				</StackPanel>
+				
+				<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+					<Label Content="SSL (FrameHTML):" Width="200"/>
+					<RadioButton x:Name="yesFrame" Margin="5" Content="Sim" IsChecked="False" IsEnabled="True" />
+          <RadioButton x:Name="noFrame" Content="Não" Margin="5" IsChecked="False" IsEnabled="True" />
+				</StackPanel>
+				
+				<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+					<Label Content="Porta (Host):" Width="200"/>
+					<ComboBox x:Name="PortsFrame" SelectedIndex="0" Text="Choose" Width="215" Margin="0,0,0,0">
+            <ComboBoxItem Content="Selecione a porta do FrameHTML"></ComboBoxItem>
+            <ComboBoxItem  x:Name="PortFrame1" Content="443"></ComboBoxItem>
+            <ComboBoxItem  x:Name="PortFrame2" Content="8080"></ComboBoxItem>
+            <ComboBoxItem  x:Name="PortFrame3" Content="8081"></ComboBoxItem>
+          </ComboBox>
+				</StackPanel>
+				
+				<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+					<Label Content="DNS (FrameHTML):" Width="200"/>
+					<TextBox x:Name="dialgResultDNSFrame" Width = "300" FontWeight="Bold" Text="" />
+				</StackPanel>	
+				
+				<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+					<Label Content="" Width="200"/>
+					<Button x:Name="btnTestarConexaoHost" Content="Testar Conexão (Host)" Width="140" Margin="0,0,10,0"/>
+					<Button x:Name="btnTestarConexaoFrame" Content="Testar Conexão (Frame)" Width="145"></Button>
+				</StackPanel>
+				
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+				  <Label x:Name="showResultHost" Foreground="blue"></Label>
+				</StackPanel>
+				
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+				  <Label x:Name="showResultFrame" Foreground="blue"></Label>
+				</StackPanel>
+			
+      </StackPanel>
+
+	  </ScrollViewer>
+	
+  </Grid>
+
+</Controls:MetroWindow>
