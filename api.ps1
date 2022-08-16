@@ -12,10 +12,10 @@ function LoadXml ($global:filename)
     return $XamlLoader
 }
 
-# Load MainWindow
-$XamlMainWindow=LoadXml("$Current_Folder\api.xaml")
-$Reader=(New-Object System.Xml.XmlNodeReader $XamlMainWindow)
-$Form=[Windows.Markup.XamlReader]::Load($Reader)
+### Load MainWindow ###
+$XamlMainWindow     = LoadXml("$Current_Folder\api.xaml")
+$Reader             = (New-Object System.Xml.XmlNodeReader $XamlMainWindow)
+$Form               = [Windows.Markup.XamlReader]::Load($Reader)
 
 [System.Windows.Forms.Application]::EnableVisualStyles()
 
@@ -23,19 +23,18 @@ function TestarRest {
 
     Param ($protocolo, $dns, $porta, $endereco)
 
-    # $inputResultHost = [System.Windows.MessageBox]::Show('A Api do Host está com SSL?', 'API do Host', [System.Windows.MessageBoxButton]::YesNo, [System.Windows.MessageBoxImage]::Question)
-    #if ($inputResultHost -eq "no") {
+    try {
+        $uri = $("{0}://{1}:{2}/{3}" -f $protocolo, $dns, $porta, $endereco)
+        $retorno = Invoke-RestMethod -Uri $uri -Method Get
+    }
+    catch {
+        $retorno = "Não foi possível validar a api."
+    }
 
-        try {
-            $uri = $("{0}://{1}:{2}/{3}" -f $protocolo, $dns, $porta, $endereco)
-            $retorno = Invoke-RestMethod -Uri $uri -Method Get
-        }
-        catch {
-            $retorno = "Não foi possível validar a api."
-        }
     return $retorno
 }
 
+### Variaveis ###
 $yesHost                    = $form.FindName("yesHost")
 $noHost                     = $form.FindName("noHost")
 $dialogResultDNSHost        = $form.FindName("dialogResultDNSHost")
@@ -52,6 +51,7 @@ $port8059                   = $form.FindName("port8059")
 $portHostOutra              = $form.FindName("portHostOutra")
 $dialogPortOutra            = $form.FindName("dialogPortOutra")
 
+### Inicio bloqueio de selecao da porta "Outra" ###
 $port8051.Add_Click({
     $dialogPortOutra.IsEnabled = $false
 })
@@ -64,20 +64,21 @@ $port8059.Add_Click({
 $portHostOutra.Add_Click({
     $dialogPortOutra.IsEnabled = $true
 })
+### Fim bloqueio de selecao da porta "Outra" ###
 
 ### Botão para testar a conexão com as informações do Host ###
 $btnTestarConexaoHost.Add_Click({
 
-    ### Inicio selecao de protocolo ###
+    ### Inicio selecao de protocolo do Host ###
     if ($yesHost.IsChecked -eq $true) {
         $sslHost = "https"
     }
     elseif ($noHost.IsChecked -eq $true) {
         $sslHost = "http"
     }
-    ### Fim selecao de protocolo ###
+    ### Fim selecao de protocolo do Host ###
     
-    ### Inicio selecao de porta ###
+    ### Inicio selecao de porta do Host ###
     if ($port8051.IsChecked -eq $true) {
         $selecaoporta = 8051
     }
@@ -89,30 +90,30 @@ $btnTestarConexaoHost.Add_Click({
     }
     elseif($portHostOutra.IsChecked -eq $true){
         $selecaoporta = $dialogPortOutra.Text
-        Write-Host = $dialogPortOutra.Text
     }
-    
-    ### Fim selecao de porta ###
+    ### Fim selecao de porta do Host ###
 
-    ### Inicio digitar DNS ###
+    ### Inicio digitar DNS do Host ###
     if(!$dialogResultDNSHost) {
         $showResultHost.Content = "Erro! Nenhum informaçao foi digitada no DNS do Host."
     } else {
         $dialogResultDNSHost.Text = $dialogResultDNSHost.Text
     }
-    ### Fim digitar DNS ###
+    ### Fim digitar DNS do Host ###
 
-    $validacao = TestarRest -protocolo $sslHost -dns $dialogResultDNSHost.Text -porta $selecaoporta -endereco 'api/rh/v1/services/healthcheck'
+    ### Validação da API ###
+    $validacaoRestHost = TestarRest -protocolo $sslHost -dns $dialogResultDNSHost.Text -porta $selecaoporta -endereco 'api/rh/v1/services/healthcheck'
         
-    if ($validacao -eq "Serviço ok!") {
-        $showResultHost.Content = "Api funcionando!"
+    ### Mensagem do retorno da requisição ###
+    if ($validacaoRestHost -eq "Serviço ok!") {
+        $showResultHost.Content = "Api do Host está funcionando!"
     } else {
-        $showResultHost.Content = "Api com problema!"
+        $showResultHost.Content = "Api do Host está com problema para comunicar!"
     }
 
 })
 
-# Botão para testar a conexão com as informações do FrameHTML
+### Botão para testar a conexão com as informações do FrameHTML ###
 $btnTestarConexaoFrame.Add_Click({
     if ($yesFrame.IsChecked -eq $true) {
         $sslFrameYes = "https"
