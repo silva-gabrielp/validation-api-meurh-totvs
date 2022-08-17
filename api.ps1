@@ -34,24 +34,38 @@ function TestarRest {
     return $retorno
 }
 
-### Variaveis ###
+### Variaveis da aba de Informações do Host ###
 $yesHost                    = $form.FindName("yesHost")
 $noHost                     = $form.FindName("noHost")
-$dialogResultDNSHost        = $form.FindName("dialogResultDNSHost")
-$yesFrame                   = $form.FindName("yesFrame")
-$noFrame                    = $form.FindName("noFrame")
-$dialgResultDNSFrame        = $form.FindName("dialgResultDNSFrame")
-$btnTestarConexaoHost       = $form.FindName("btnTestarConexaoHost")
-$btnTestarConexaoFrame      = $form.FindName("btnTestarConexaoFrame")
-$showResultHost             = $form.FindName("showResultHost")
-$showResultFrame            = $form.FindName("showResultFrame")
 $port8051                   = $form.FindName("port8051")
 $port8053                   = $form.FindName("port8053")
 $port8059                   = $form.FindName("port8059")
 $portHostOutra              = $form.FindName("portHostOutra")
 $dialogPortOutra            = $form.FindName("dialogPortOutra")
+$dialogResultDNSHost        = $form.FindName("dialogResultDNSHost")
 
-### Inicio bloqueio de selecao da porta "Outra" ###
+### Variaveis da aba de Informações do FrameHTML ###
+$installDefaultYes          = $form.FindName("installDefaultYes")
+$installDefaultNo           = $form.FindName("installDefaultNo")
+$yesFrame                   = $form.FindName("yesFrame")
+$noFrame                    = $form.FindName("noFrame")
+$port80                     = $form.FindName("port80")
+$port443                    = $form.FindName("port443")
+$port8080                   = $form.FindName("port8080")
+$port8081                   = $form.FindName("port8081")
+$portFrameOutra             = $form.FindName("portFrameOutra")
+$dialogPortOutraFrame       = $form.FindName("dialogPortOutraFrame")
+$dialgResultDNSFrame        = $form.FindName("dialgResultDNSFrame")
+
+### Variaveis do botão de validação ###
+$btnTestarConexaoHost       = $form.FindName("btnTestarConexaoHost")
+$btnTestarConexaoFrame      = $form.FindName("btnTestarConexaoFrame")
+
+### Variaveis de apresentação do resultado da validacao ###
+$showResultHost             = $form.FindName("showResultHost")
+$showResultFrame            = $form.FindName("showResultFrame")
+
+### Inicio bloqueio de selecao da porta "Outra" do Host ###
 $port8051.Add_Click({
     $dialogPortOutra.IsEnabled = $false
 })
@@ -64,9 +78,27 @@ $port8059.Add_Click({
 $portHostOutra.Add_Click({
     $dialogPortOutra.IsEnabled = $true
 })
-### Fim bloqueio de selecao da porta "Outra" ###
+### Fim bloqueio de selecao da porta "Outra" do Host ###
 
-### Botão para testar a conexão com as informações do Host ###
+### Inicio bloqueio de selecao da porta "Outra" do FrameHTML ###
+$port80.Add_Click({
+    $dialogPortOutraFrame.IsEnabled = $false
+})
+$port443.Add_Click({
+    $dialogPortOutraFrame.IsEnabled = $false
+})
+$port8080.Add_Click({
+    $dialogPortOutraFrame.IsEnabled = $false
+})
+$port8081.Add_Click({
+    $dialogPortOutraFrame.IsEnabled = $false
+})
+$portFrameOutra.Add_Click({
+    $dialogPortOutraFrame.IsEnabled = $true
+})
+### Fim bloqueio de selecao da porta "Outra" do FrameHTML ###
+
+### Inicio botão para testar a conexão com as informações do Host ###
 $btnTestarConexaoHost.Add_Click({
 
     ### Inicio selecao de protocolo do Host ###
@@ -94,10 +126,10 @@ $btnTestarConexaoHost.Add_Click({
     ### Fim selecao de porta do Host ###
 
     ### Inicio digitar DNS do Host ###
-    if(!$dialogResultDNSHost) {
+    if(!$dialgResultDNSFrame) {
         $showResultHost.Content = "Erro! Nenhum informaçao foi digitada no DNS do Host."
     } else {
-        $dialogResultDNSHost.Text = $dialogResultDNSHost.Text
+        $dialgResultDNSFrame.Text = $dialgResultDNSFrame.Text
     }
     ### Fim digitar DNS do Host ###
 
@@ -106,27 +138,75 @@ $btnTestarConexaoHost.Add_Click({
         
     ### Mensagem do retorno da requisição ###
     if ($validacaoRestHost -eq "Serviço ok!") {
-        $showResultHost.Content = "Api do Host está funcionando!"
+        $showResultHost.Content = "A api do Host está funcionando!"
+        $showResultHost.Foreground = "Green"
     } else {
-        $showResultHost.Content = "Api do Host está com problema para comunicar!"
+        $showResultHost.Content = "A api do Host está com problema para se comunicar!"
+        $showResultHost.Foreground = "Red"
     }
 
 })
+### Fim botão para testar a conexão com as informações do Host ###
 
 ### Botão para testar a conexão com as informações do FrameHTML ###
 $btnTestarConexaoFrame.Add_Click({
+    
+    ### Inicio selecao de instalacao do Portal RM ###
+    if ($installDefaultYes.IsChecked -eq $true) {
+        $urlFrame = "FrameHTML/rm/api/rest/new/services/healthcheck"
+    }
+    elseif ($installDefaultNo.IsChecked -eq $true) {
+        $urlFrame = "rm/api/rest/new/services/healthcheck"
+    }
+    ### Fim selecao de instalacao do Portal RM ###
+
+    ### Inicio selecao de protocolo do Host ###
     if ($yesFrame.IsChecked -eq $true) {
-        $sslFrameYes = "https"
+        $sslFrame = "https"
     }
     elseif ($noFrame.IsChecked -eq $true) {
-        $sslFrameNo = "http"
+        $sslFrame = "http"
     }
+    ### Fim selecao de protocolo do Host ###
     
+    ### Inicio selecao de porta do Host ###
+    if ($port80.IsChecked -eq $true) {
+        $selecaoportaFrame = 80
+    }
+    elseif ($port443.IsChecked -eq $true) {
+        $selecaoportaFrame = 443
+    }
+    elseif ($port8080.IsChecked -eq $true) {
+        $selecaoportaFrame = 8080
+    }
+    elseif ($port8081.IsChecked -eq $true) {
+        $selecaoportaFrame = 8081
+    }
+    elseif($portFrameOutra.IsChecked -eq $true){
+        $selecaoportaFrame = $dialogPortOutraFrame.Text
+    }
+    ### Fim selecao de porta do Host ###
+
+    ### Inicio digitar DNS do Host ###
     if(!$dialgResultDNSFrame) {
-        $showResultFrame = "Erro! Nenhum informaçao foi digitada no DNS do FrameHTML."
+        $showResultFrame.Content = "Erro! Nenhum informaçao foi digitada no DNS do Host."
     } else {
         $dialgResultDNSFrame.Text = $dialgResultDNSFrame.Text
     }
+    ### Fim digitar DNS do Host ###
+
+    ### Validação da API ###
+    $validacaoRestFrame = TestarRest -protocolo $sslFrame -dns $dialgResultDNSFrame.Text -porta $selecaoportaFrame -endereco $urlFrame
+        
+    ### Mensagem do retorno da requisição ###
+    if ($validacaoRestFrame -eq "Serviço ok!") {
+        $showResultFrame.Content = "A api do FrameHTML está funcionando!"
+        $showResultFrame.Foreground = "Green"
+    } else {
+        $showResultFrame.Content = "A api do FrameHTML está com problema para se comunicar!"
+        $showResultFrame.Foreground = "Red"
+    }
+
 })
 
 $Form.ShowDialog() | Out-Null

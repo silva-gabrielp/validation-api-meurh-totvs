@@ -4,9 +4,9 @@
         xmlns:controlzEx="urn:controlzex"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        Title="Adicionar IP e DNS no Host do Windws e Validação de API"
-	      Height="450"
-        Width="600"
+        Title="Validação da API para acesso ao App Meu RH"
+	      Height="480"
+        Width="620"
         TitleCaps="False"
         BorderThickness="2"
         BorderBrush="#575757"
@@ -91,12 +91,12 @@
 				
 				<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
 					<Label Content="Porta (Host):" Width="200"/>
-					<ComboBox x:Name="PortsFrame" SelectedIndex="0" Text="Choose" Width="215" Margin="0,0,0,0">
-            <ComboBoxItem Content="Selecione a porta do FrameHTML"></ComboBoxItem>
-            <ComboBoxItem  x:Name="PortFrame1" Content="443"></ComboBoxItem>
-            <ComboBoxItem  x:Name="PortFrame2" Content="8080"></ComboBoxItem>
-            <ComboBoxItem  x:Name="PortFrame3" Content="8081"></ComboBoxItem>
-          </ComboBox>
+					  <RadioButton x:Name="port80" Margin="5" Content="80" IsChecked="False" IsEnabled="True" />
+          	<RadioButton x:Name="port443" Margin="5" Content="443"  IsChecked="False" IsEnabled="True" />
+          	<RadioButton x:Name="port8080" Margin="5" Content="8080"  IsChecked="False" IsEnabled="True" />
+          	<RadioButton x:Name="port8081" Margin="5" Content="8081"  IsChecked="False" IsEnabled="True" />
+          	<RadioButton x:Name="portFrameOutra" Margin="10" Content="Outra"  IsChecked="False" IsEnabled="True" />
+          	<TextBox x:Name="dialogPortOutraFrame" Width = "80" Height="15" FontWeight="Bold" IsEnabled="False" />
 				</StackPanel>
 				
 				<StackPanel Orientation="Horizontal" Margin="0,5,0,0">
