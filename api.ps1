@@ -5,6 +5,15 @@ $Global:Current_Folder = split-path $MyInvocation.MyCommand.Path
 [System.Reflection.Assembly]::LoadFrom("MahApps.Metro.dll")       				| out-null
 #[System.Reflection.Assembly]::LoadFrom("MahApps.Metro.IconPacks.dll")           | out-null
 
+### Ocultor console ###
+Add-Type -Name Window -Namespace Console -MemberDefinition '
+[DllImport("Kernel32.dll")]
+public static extern IntPtr GetConsoleWindow();
+[DllImport("user32.dll")]
+public static extern bool ShowWindow(IntPtr hWnd, Int32 nCmdShow);'
+$consolePtr = [Console.Window]::GetConsoleWindow()
+[Console.Window]::ShowWindow($consolePtr, 0)
+
 function LoadXml ($global:filename)
 {
     $XamlLoader=(New-Object System.Xml.XmlDocument)
@@ -138,10 +147,10 @@ $btnTestarConexaoHost.Add_Click({
         
     ### Mensagem do retorno da requisição ###
     if ($validacaoRestHost -eq "Serviço ok!") {
-        $showResultHost.Content = "A api do Host está funcionando!"
+        $showResultHost.Content = "A api do Host esta funcionando."
         $showResultHost.Foreground = "Green"
     } else {
-        $showResultHost.Content = "A api do Host está com problema para se comunicar!"
+        $showResultHost.Content = "A api do Host esta com problema para se comunicar."
         $showResultHost.Foreground = "Red"
     }
 
@@ -189,7 +198,7 @@ $btnTestarConexaoFrame.Add_Click({
 
     ### Inicio digitar DNS do Host ###
     if(!$dialgResultDNSFrame) {
-        $showResultFrame.Content = "Erro! Nenhum informaçao foi digitada no DNS do Host."
+        $showResultFrame.Content = "Erro! Nenhum informacao foi digitada no DNS do Host."
     } else {
         $dialgResultDNSFrame.Text = $dialgResultDNSFrame.Text
     }
@@ -200,10 +209,10 @@ $btnTestarConexaoFrame.Add_Click({
         
     ### Mensagem do retorno da requisição ###
     if ($validacaoRestFrame -eq "Serviço ok!") {
-        $showResultFrame.Content = "A api do FrameHTML está funcionando!"
+        $showResultFrame.Content = "A api do FrameHTML ests funcionando."
         $showResultFrame.Foreground = "Green"
     } else {
-        $showResultFrame.Content = "A api do FrameHTML está com problema para se comunicar!"
+        $showResultFrame.Content = "A api do FrameHTML esta com problema para se comunicar."
         $showResultFrame.Foreground = "Red"
     }
 
